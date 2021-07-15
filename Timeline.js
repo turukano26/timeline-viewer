@@ -14,9 +14,15 @@ for (var i = startYear; i < endYear; i += 1) {
     path = new Path.Line(topPoint, bottomPoint);
     if (i % 100 == 0) {
         grayValue = 0;
+        text = new PointText(bottomPoint);
+        text.fillColor = 'black';
+        text.content = i;
     }
     else if (i % 50 == 0) {
         grayValue = 0.5;
+        text = new PointText(bottomPoint);
+        text.fillColor = 'black';
+        text.content = i;
     }
     else if (i % 10 == 0) {
         grayValue = 0.75;
