@@ -23,7 +23,7 @@ var timelineLayer = new Layer({ name: "timeline" });
 function printLines() {
 
     var topPoint = new Point(0, 0);
-    var bottomPoint = new Point(0, 500);
+    var bottomPoint = new Point(0, 20000);
     var scalingFactor = 5;
 
     for (var i = startYear; i < endYear; i += 1) {
@@ -59,25 +59,14 @@ function printLines() {
     }
 }
 
-/* // Create a Tool so we can listen for events
+// Create a Tool so we can listen for events
 var toolPan = new paper.Tool()
 toolPan.activate()
 
-// On drag, scroll the View by the difference between mousedown 
-// and mouseup
-toolPan.onMouseDown = function (event) {
-    mouseDown = true;
-    curScrollPoint = event.point;
-    lastScrollPoint = event.point;
+toolPan.onMouseDrag = function (event){
+    timelineLayer.translate(new Point(event.delta.x, 0));
+    regionLayer.translate(new Point(0, event.delta.y));
 }
-toolPan.onMouseMove = function (event) {
-    if (mouseDown) {
-        timelineLayer.translate(new Point((event.point - curScrollPoint).x, 0));
-    }
-}
-toolPan.onMouseUp = function (event) {
-    mouseDown = false;
-} */
 
 /* tool.onKeyDown = function (event) {
     if (event.key == 'right') {
@@ -155,6 +144,7 @@ this.zooming = function (delta, point) {
     // recieve event coord in project after native zoom
     var pointOut2 = paper.view.projectToView(pointIn);
     // get translation and apply it
+    //var trans = [((pointOut.x - pointOut2.x) / paper.view.zoom), ((pointOut.y - pointOut2.y) / paper.view.zoom)];
     var trans = [((pointOut.x - pointOut2.x) / paper.view.zoom), ((pointOut.y - pointOut2.y) / paper.view.zoom)];
     paper.view.translate(trans);
 
@@ -187,7 +177,7 @@ function myFunction(xml) {
     var xmlDoc = xml.responseXML;
 
     regionLayer.activate();
-    height = printRegions(xmlDoc, 1, 0);
+    height = printRegions(xmlDoc, 0, 0);
 
     timelineLayer.activate();
     printLines(height);
@@ -229,7 +219,7 @@ function createCatagoryBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(50 + depth * 50, endY));
     shape = new Shape.Rectangle(rectangle);
     shape.fillColor = rainbowStop((curColor - 0.12) % 1);
-    shape.opacity = 0.5;
+    shape.opacity = 0.3;
 
     var textLocation = new Point(depth * 50, endY);
     var text = new PointText(textLocation);
