@@ -7,13 +7,18 @@ var pointIncrease = new Point(gradiation, 0);
 var path;
 var text;
 
+var mouseDown = false;
+
+var curScrollPoint;
+var lastScrollPoint;
+
 var maxDepth = 5;
 var filePath = "regions.json";
 
 var curColor = 0;
 
-var regionLayer = new Layer({name: regions});
-var timelineLayer = new Layer({name: timeline});
+var regionLayer = new Layer({ name: "regions" });
+var timelineLayer = new Layer({ name: "timeline" });
 
 function printLines() {
 
@@ -54,18 +59,27 @@ function printLines() {
     }
 }
 
-// Create a Tool so we can listen for events
+/* // Create a Tool so we can listen for events
 var toolPan = new paper.Tool()
 toolPan.activate()
 
 // On drag, scroll the View by the difference between mousedown 
 // and mouseup
-toolPan.onMouseDrag = function (event) {
-    var delta = event.downPoint.subtract(event.point)
-    paper.view.scrollBy(delta)
+toolPan.onMouseDown = function (event) {
+    mouseDown = true;
+    curScrollPoint = event.point;
+    lastScrollPoint = event.point;
 }
+toolPan.onMouseMove = function (event) {
+    if (mouseDown) {
+        timelineLayer.translate(new Point((event.point - curScrollPoint).x, 0));
+    }
+}
+toolPan.onMouseUp = function (event) {
+    mouseDown = false;
+} */
 
-tool.onKeyDown = function (event) {
+/* tool.onKeyDown = function (event) {
     if (event.key == 'right') {
         // Scale the path by 110%:
         paper.view.scrollBy(new Point(9, 0))
@@ -80,7 +94,71 @@ tool.onKeyDown = function (event) {
         // Prevent the key event from bubbling
         return false;
     }
+} */
+
+var elem = document.getElementById("canvas");
+
+if (elem.addEventListener) {
+    if ('onwheel' in document) {
+        // IE9+, FF17+, Ch31+
+        elem.addEventListener("wheel", onWheel);
+    } else if ('onmousewheel' in document) {
+        // устаревший вариант события
+        elem.addEventListener("mousewheel", onWheel);
+    } else {
+        // Firefox < 17
+        elem.addEventListener("MozMousePixelScroll", onWheel);
+    }
+} else { // IE8-
+    elem.attachEvent("onmousewheel", onWheel);
 }
+
+function onWheel(e) {
+    e = e || window.event;
+
+    //get mousewheel delta only for negative or positive
+    var delta = e.deltaY || e.detail || e.wheelDelta;
+
+    // get the point in paper coords
+    var point = paper.view.getEventPoint(e);
+    //make a zoom
+    paper.zooming(delta, point);// THIS IS THE ZOOM FUNCTION ITSELF!!!!!!!
+
+    e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+}
+
+this.zooming = function (delta, point) {
+    var MIN = 0.2;
+    var MAX = 7;
+    var ZOOM_FACTOR = 10;
+    // recieve event coords in view
+    var pointIn = point;
+    // recieve coords in project
+    var pointOut = paper.view.projectToView(pointIn);
+    //get mouse event only for + or -
+    var zoom = delta;
+    //prepare zoom factor
+    var zoomVal = paper.view.zoom / ZOOM_FACTOR;
+    //make a zoom
+    if (zoom > 0) {
+        paper.view.zoom -= zoomVal;
+    }
+    if (zoom < 0) {
+        paper.view.zoom += zoomVal;
+    }
+//if bigga or smalla adjust
+    if (paper.view.zoom > MAX) {
+        paper.view.zoom = MAX;
+    } else if (paper.view.zoom < MIN) {
+        paper.view.zoom = MIN;
+    }
+    // recieve event coord in project after native zoom
+    var pointOut2 = paper.view.projectToView(pointIn);
+    // get translation and apply it
+    var trans = [((pointOut.x - pointOut2.x) / paper.view.zoom), ((pointOut.y - pointOut2.y) / paper.view.zoom)];
+    paper.view.translate(trans);
+
+};
 
 var mydata = JSON.parse(loadFile(filePath));
 console.log(mydata);
@@ -107,8 +185,14 @@ xhttp.send();
 
 function myFunction(xml) {
     var xmlDoc = xml.responseXML;
+
+    regionLayer.activate();
     height = printRegions(xmlDoc, 1, 0);
+
+    timelineLayer.activate();
     printLines(height);
+
+    regionLayer.bringToFront();
 }
 
 
@@ -144,7 +228,7 @@ function printRegions(rootNode, depth, startY) {
 function createCatagoryBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(50 + depth * 50, endY));
     shape = new Shape.Rectangle(rectangle);
-    shape.fillColor = rainbowStop((curColor-0.12)%1);
+    shape.fillColor = rainbowStop((curColor - 0.12) % 1);
     shape.opacity = 0.5;
 
     var textLocation = new Point(depth * 50, endY);
@@ -154,7 +238,6 @@ function createCatagoryBox(label, startY, endY, depth) {
     text.rotate(270, textLocation);
     text.translate(new Point(25, -5));
     text.fontSize = 20;
-    console.log(text.strokeBounds.height + "   " + label);
 
     if (text.strokeBounds.height > endY - startY) {
         scalingFactor = (endY - startY) / (text.strokeBounds.height + 10);
@@ -166,7 +249,7 @@ function createFinalBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(3000, endY));
     shape = new Shape.Rectangle(rectangle);
     shape.fillColor = rainbowStop(curColor);
-    curColor = (curColor+0.05)%1;
+    curColor = (curColor + 0.05) % 1;
     shape.opacity = 0.25;
 
     var textLocation = new Point(depth * 50, endY);
