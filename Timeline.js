@@ -146,7 +146,14 @@ function createCatagoryBox(label, startY, endY, depth) {
     text.fillColor = 'black';
     text.content = label;
     text.rotate(270,textLocation);
-    text.translate(new Point(25,-10));
+    text.translate(new Point(25,-5));
+    text.fontSize = 20;
+    console.log(text.strokeBounds.height + "   " + label);
+
+    if(text.strokeBounds.height > endY-startY){
+        scalingFactor = (endY-startY)/(text.strokeBounds.height+10);
+        text.scale(scalingFactor,scalingFactor,textLocation);
+    }
 }
 
 function createFinalBox(label, startY, endY, depth) {
@@ -159,5 +166,6 @@ function createFinalBox(label, startY, endY, depth) {
     var text = new PointText(textLocation);
     text.fillColor = 'black';
     text.content = label;
-    text.translate(new Point(25,-5));
+    text.fontSize = 15;
+    text.translate(new Point(10,-5));
 }
