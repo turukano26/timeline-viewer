@@ -56,8 +56,8 @@ toolPan.activate()
 // On drag, scroll the View by the difference between mousedown 
 // and mouseup
 toolPan.onMouseDrag = function (event) {
-  var delta = event.downPoint.subtract(event.point)
-  paper.view.scrollBy(delta)
+    var delta = event.downPoint.subtract(event.point)
+    paper.view.scrollBy(delta)
 }
 
 tool.onKeyDown = function (event) {
@@ -117,23 +117,47 @@ function printRegions(rootNode, depth, startY) {
 
             //if its not a leaf
             if (curChild.childNodes.length != 0) {
+
                 endY = printRegions(curChild, depth + 1, startY);
-                /* rectangle = new Rectangle(new Point(depth*50, startY), new Point(200+depth*50, endY));
-                shape = new Shape.Rectangle(rectangle);
-                shape.strokeColor = 'blue'; */
-                startY=endY;
+                createCatagoryBox(curChild.nodeName, startY, endY, depth);
+                startY = endY;
 
             }
             //if it is a leaf
             else {
-                endY = startY + 100 / depth;
 
-                rectangle = new Rectangle(new Point(depth*50, startY), new Point(200+depth*50, endY));
-                shape = new Shape.Rectangle(rectangle);
-                shape.strokeColor = 'red';
+                endY = startY + 100 / depth;
+                createFinalBox(curChild.nodeName, startY, endY, depth);
                 startY = endY;
             }
         }
     }
     return endY;
+}
+
+function createCatagoryBox(label, startY, endY, depth) {
+    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(50 + depth * 50, endY));
+    shape = new Shape.Rectangle(rectangle);
+    shape.fillColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    shape.opacity = 0.5;
+
+    var textLocation = new Point(depth*50, endY);
+    var text = new PointText(textLocation);
+    text.fillColor = 'black';
+    text.content = label;
+    text.rotate(270,textLocation);
+    text.translate(new Point(25,-10));
+}
+
+function createFinalBox(label, startY, endY, depth) {
+    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(350, endY));
+    shape = new Shape.Rectangle(rectangle);
+    shape.fillColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    shape.opacity = 0.5;
+
+    var textLocation = new Point(depth*50, endY);
+    var text = new PointText(textLocation);
+    text.fillColor = 'black';
+    text.content = label;
+    text.translate(new Point(25,-5));
 }
