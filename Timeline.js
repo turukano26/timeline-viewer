@@ -10,6 +10,9 @@ var pointIncrease = new Point(gradiation, 0);
 var path;
 var text;
 
+var filePath = "data.json";
+
+
 for (var i = startYear; i < endYear; i += 1) {
     path = new Path.Line(topPoint, bottomPoint);
     if (i % 100 == 0) {
@@ -72,4 +75,18 @@ tool.onKeyDown = function (event) {
         // Prevent the key event from bubbling
         return false;
     }
+}
+
+var mydata = JSON.parse(loadFile(filePath));
+console.log(mydata);
+
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      result = xmlhttp.responseText;
+    }
+    return result;
 }

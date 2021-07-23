@@ -1,0 +1,153 @@
+{
+    "World": {
+        "EasternEurope": {
+            "WestKazakhstan": {},
+            "NorthCaucasus": {},
+            "Rus": {
+                "Russia": {},
+                "Belarus": {},
+                "Ukraine": {}
+            },
+            "Romania": {},
+            "Hungary": {},
+            "Slovakia": {},
+            "Czechia": {},
+            "Poland": {},
+            "Baltics": {
+                "Lithuania": {},
+                "Latvia": {},
+                "Estonia": {}
+            },
+            "Finland": {}
+        },
+        "Germania": {
+            "Scandinavia": {
+                "Sweden": {},
+                "Norway": {},
+                "Iceland": {},
+                "Denmark": {}
+            },
+            "Germany": {
+                "EastGermany": {},
+                "Bavaria": {},
+                "Austria": {},
+                "Switzerland": {},
+                "RhineGermany": {}
+            },
+            "Netherlands": {}
+        },
+        "Britain": {
+            "England": {},
+            "Scotland": {},
+            "Ireland": {}
+        },
+        "Mediterranean": {
+            "France": {},
+            "Iberia": {},
+            "NorthAfrica": {},
+            "Italy": {},
+            "Balkans": {},
+            "Bulgaria": {},
+            "Greece": {},
+            "Anatolia": {
+                "West": {},
+                "South": {},
+                "Central": {},
+                "Pontus": {}
+            },
+            "SouthCaucasus": {
+                "Georgia": {},
+                "Armenia": {},
+                "Azerbaijan": {}
+            },
+            "Levant": {},
+            "Egypt": {
+                "Cyrene": {},
+                "Upper": {},
+                "Lower": {}
+            }
+        },
+        "Ethiopia": {
+            "Kush": {},
+            "Ethiopia": {},
+            "Somalia": {}
+        },
+        "Arabia": {
+            "Yemen": {},
+            "Oman": {},
+            "Saudi": {},
+            "Jordan": {}
+        },
+        "Mesopotamia": {
+            "Kurdistan": {},
+            "Upper": {},
+            "Lower": {}
+        },
+        "Persia": {
+            "Persis": {},
+            "NorthWest": {},
+            "Central": {},
+            "Oxus": {},
+            "Tajikistan": {},
+            "Afghanistan": {}
+        },
+        "India": {
+            "Indus": {},
+            "Gujrat": {},
+            "Ganges": {},
+            "Nepal": {},
+            "FarEast": {},
+            "Bengal": {},
+            "SouthEast": {},
+            "Deccan": {},
+            "SouthWest": {},
+            "Tamil": {},
+            "SriLanka": {}
+        },
+        "Malay": {
+            "Sumatra": {},
+            "Java": {},
+            "Borneo": {},
+            "Philippines": {}
+        },
+        "Indochina": {
+            "Singapore": {},
+            "Malaysia": {},
+            "Thailand": {},
+            "Burma": {},
+            "Cambodia": {},
+            "Laos": {},
+            "Vietnam": {
+                "Champa": {},
+                "Annan": {}
+            }
+        },
+        "Sinosphere": {
+            "China": {
+                "Yunnan": {},
+                "Guangxi": {},
+                "Guangdong": {},
+                "Fujian": {},
+                "Yangtze": {},
+                "Sichuan": {},
+                "Hanzhong": {},
+                "NorthChinaPlain": {},
+                "Gansu": {},
+                "NorthChina": {}
+            },
+            "Korea": {
+                "North": {},
+                "South": {}
+            },
+            "Japan": {},
+            "Manchuria": {}
+        },
+        "EastSteppes": {
+            "Mongolia": {},
+            "Dzungaria": {},
+            "Tibet": {},
+            "TarimBasin": {},
+            "EastKazakhstan": {}
+        }
+    }
+}
