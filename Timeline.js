@@ -6,13 +6,14 @@ var pointIncrease = new Point(gradiation, 0);
 
 var path;
 var text;
+var xmlDoc;
 
 var mouseDown = false;
 
 var curScrollPoint;
 var lastScrollPoint;
 
-var maxDepth = 5;
+var maxDepth = 3;
 var filePath = "regions.json";
 
 var curColor = 0;
@@ -117,36 +118,13 @@ function onWheel(e) {
 }
 
 this.zooming = function (delta, point) {
-    var MIN = 0.2;
-    var MAX = 7;
+
     var ZOOM_FACTOR = 10;
-    // recieve event coords in view
-    var pointIn = point;
-    // recieve coords in project
-    var pointOut = paper.view.projectToView(pointIn);
-    //get mouse event only for + or -
-    var zoom = delta;
-    //prepare zoom factor
-    var zoomVal = paper.view.zoom / ZOOM_FACTOR;
-    //make a zoom
-    if (zoom > 0) {
-        paper.view.zoom -= zoomVal;
-    }
-    if (zoom < 0) {
-        paper.view.zoom += zoomVal;
-    }
-//if bigga or smalla adjust
-    if (paper.view.zoom > MAX) {
-        paper.view.zoom = MAX;
-    } else if (paper.view.zoom < MIN) {
-        paper.view.zoom = MIN;
-    }
-    // recieve event coord in project after native zoom
-    var pointOut2 = paper.view.projectToView(pointIn);
-    // get translation and apply it
-    //var trans = [((pointOut.x - pointOut2.x) / paper.view.zoom), ((pointOut.y - pointOut2.y) / paper.view.zoom)];
-    var trans = [((pointOut.x - pointOut2.x) / paper.view.zoom), ((pointOut.y - pointOut2.y) / paper.view.zoom)];
-    paper.view.translate(trans);
+
+    var zoomVal = Math.pow(1.1, delta/ ZOOM_FACTOR);
+
+    timelineLayer.scale(zoomVal,new Point(0,0));
+    regionLayer.scale(zoomVal, new Point(0,0));
 
 };
 
@@ -174,9 +152,10 @@ xhttp.open("GET", "regions.xml", true);
 xhttp.send();
 
 function myFunction(xml) {
-    var xmlDoc = xml.responseXML;
+    xmlDoc = xml.responseXML;
 
     regionLayer.activate();
+    regionLayer.applyMatrix = false;
     height = printRegions(xmlDoc, 0, 0);
 
     timelineLayer.activate();
@@ -184,7 +163,12 @@ function myFunction(xml) {
 
     regionLayer.bringToFront();
 }
+function redrawRegions(){
+    regionLayer.removeChildren();
+    regionLayer.activate();
+    printRegions(xmlDoc, 0, 0);
 
+}
 
 function printRegions(rootNode, depth, startY) {
     for (var i = 0; i < rootNode.childNodes.length; i++) {
@@ -216,7 +200,7 @@ function printRegions(rootNode, depth, startY) {
 }
 
 function createCatagoryBox(label, startY, endY, depth) {
-    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(50 + depth * 50, endY));
+    rectangle = new Rectangle(new Point((depth * 50), startY), new Point((50 + depth * 50), endY));
     shape = new Shape.Rectangle(rectangle);
     shape.fillColor = rainbowStop((curColor - 0.12) % 1);
     shape.opacity = 0.3;
@@ -239,7 +223,7 @@ function createFinalBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(3000, endY));
     shape = new Shape.Rectangle(rectangle);
     shape.fillColor = rainbowStop(curColor);
-    curColor = (curColor + 0.05) % 1;
+    curColor = (curColor + (1/(depth*10))) % 1;
     shape.opacity = 0.25;
 
     var textLocation = new Point(depth * 50, endY);
