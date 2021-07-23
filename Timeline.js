@@ -31,19 +31,21 @@ function printLines() {
         path = new Path.Line(topPoint, bottomPoint);
         if (i % 100 == 0) {
             grayValue = 0;
-            text = new PointText(bottomPoint);
+            text = new PointText(topPoint+new Point(0,20));
+            text.fontSize = 20;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 50 == 0) {
             grayValue = 0.5;
-            text = new PointText(bottomPoint);
+            text = new PointText(topPoint+new Point(0,20));
+            text.fontSize = 15;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 10 == 0) {
             grayValue = 0.75;
-            text = new PointText(bottomPoint);
+            text = new PointText(topPoint+new Point(0,20));
             text.fillColor = 'black';
             text.content = i;
         }
@@ -121,7 +123,7 @@ this.zooming = function (delta, point) {
 
     var ZOOM_FACTOR = 10;
 
-    var zoomVal = Math.pow(1.1, delta/ ZOOM_FACTOR);
+    var zoomVal = Math.pow(1.05, delta/ ZOOM_FACTOR);
 
     timelineLayer.scale(zoomVal,new Point(0,0));
     regionLayer.scale(zoomVal, new Point(0,0));
@@ -220,7 +222,7 @@ function createCatagoryBox(label, startY, endY, depth) {
 }
 
 function createFinalBox(label, startY, endY, depth) {
-    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(3000, endY));
+    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(30000, endY));
     shape = new Shape.Rectangle(rectangle);
     shape.fillColor = rainbowStop(curColor);
     curColor = (curColor + (1/(depth*10))) % 1;
