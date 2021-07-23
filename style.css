@@ -8,6 +8,6 @@ body {
 /* Scale canvas with resize attribute to have space for buttons at the bottom */
 canvas[resize] {
     width: 100%;
-    height: 80%;
+    height: 100%;
     touch-action: none;
 }

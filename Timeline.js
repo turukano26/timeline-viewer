@@ -10,7 +10,7 @@ var pointIncrease = new Point(gradiation, 0);
 var path;
 var text;
 
-var filePath = "data.json";
+var filePath = "regions.json";
 
 
 for (var i = startYear; i < endYear; i += 1) {
@@ -49,7 +49,7 @@ var cornerSize = new Size(10, 10);
 var shape = new Shape.Rectangle(rectangle, cornerSize);
 shape.strokeColor = 'red';
 
-/* // Create a Tool so we can listen for events
+// Create a Tool so we can listen for events
 var toolPan = new paper.Tool()
 toolPan.activate()
 
@@ -58,7 +58,7 @@ toolPan.activate()
 toolPan.onMouseDrag = function (event) {
   var delta = event.downPoint.subtract(event.point)
   paper.view.scrollBy(delta)
-} */
+}
 
 tool.onKeyDown = function (event) {
     if (event.key == 'right') {
@@ -85,8 +85,55 @@ function loadFile(filePath) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", filePath, false);
     xmlhttp.send();
-    if (xmlhttp.status==200) {
-      result = xmlhttp.responseText;
+    if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
     }
     return result;
+}
+
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+    }
+};
+xhttp.open("GET", "regions.xml", true);
+xhttp.send();
+
+function myFunction(xml) {
+    var xmlDoc = xml.responseXML;
+    printRegions(xmlDoc, 1, 0);
+}
+
+
+function printRegions(rootNode, depth, startY) {
+    for (var i = 0; i < rootNode.childNodes.length; i++) {
+
+        var curChild = rootNode.childNodes[i];
+
+        if (curChild.nodeType == 1) {
+
+            //console.log(curChild.nodeName + "   " + height);
+
+            //if its not a leaf
+            if (curChild.childNodes.length != 0) {
+                endY = printRegions(curChild, depth + 1, startY);
+                /* rectangle = new Rectangle(new Point(depth*50, startY), new Point(200+depth*50, endY));
+                shape = new Shape.Rectangle(rectangle);
+                shape.strokeColor = 'blue'; */
+                startY=endY;
+
+            }
+            //if it is a leaf
+            else {
+                endY = startY + 100 / depth;
+
+                rectangle = new Rectangle(new Point(depth*50, startY), new Point(200+depth*50, endY));
+                shape = new Shape.Rectangle(rectangle);
+                shape.strokeColor = 'red';
+                startY = endY;
+            }
+        }
+    }
+    return endY;
 }
