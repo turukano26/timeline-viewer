@@ -8,7 +8,6 @@
       <Belarus/>
       <Ukraine/>
     </Rus>
-    <Romania/>
     <Hungary/>
     <Slovakia/>
     <Czechia/>
@@ -47,8 +46,25 @@
     <NorthAfrica/>
     <Italy/>
     <Balkans/>
+    <Romania/>
     <Bulgaria/>
-    <Greece/>
+    <Greece>
+      <Thrace/>
+      <Macedonia/>
+      <Epirus/>
+      <Thessaly/>
+      <CentralGreece>
+        <Euboea/>
+        <Attica/>
+        <Central/>
+      </CentralGreece>
+      <WesternGreece/>
+      <IonianIslands/>
+      <Peloponnese/>
+      <Crete/>
+      <SouthAegean/>
+      <NorthAegean/>
+    </Greece>
     <Anatolia>
       <West/>
       <South/>

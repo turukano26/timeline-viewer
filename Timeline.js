@@ -1,53 +1,58 @@
 var startYear = -500;
 var endYear = 2000;
 var gradiation = 10;
-var topPoint = new Point(0, 0);
-var bottomPoint = new Point(0, 500);
-var scalingFactor = 5;
 
 var pointIncrease = new Point(gradiation, 0);
 
 var path;
 var text;
 
+var maxDepth = 5;
 var filePath = "regions.json";
 
+var curColor = 0;
 
-for (var i = startYear; i < endYear; i += 1) {
-    path = new Path.Line(topPoint, bottomPoint);
-    if (i % 100 == 0) {
-        grayValue = 0;
-        text = new PointText(bottomPoint);
-        text.fillColor = 'black';
-        text.content = i;
-    }
-    else if (i % 50 == 0) {
-        grayValue = 0.5;
-        text = new PointText(bottomPoint);
-        text.fillColor = 'black';
-        text.content = i;
-    }
-    else if (i % 10 == 0) {
-        grayValue = 0.75;
-        text = new PointText(bottomPoint);
-        text.fillColor = 'black';
-        text.content = i;
-    }
-    else if (i % 5 == 0) {
-        grayValue = 0.875;
-    }
-    else {
-        continue;
-    }
-    path.strokeColor = new Color(grayValue);
+var regionLayer = new Layer({name: regions});
+var timelineLayer = new Layer({name: timeline});
 
-    topPoint += pointIncrease * scalingFactor;
-    bottomPoint += pointIncrease * scalingFactor;
+function printLines() {
+
+    var topPoint = new Point(0, 0);
+    var bottomPoint = new Point(0, 500);
+    var scalingFactor = 5;
+
+    for (var i = startYear; i < endYear; i += 1) {
+        path = new Path.Line(topPoint, bottomPoint);
+        if (i % 100 == 0) {
+            grayValue = 0;
+            text = new PointText(bottomPoint);
+            text.fillColor = 'black';
+            text.content = i;
+        }
+        else if (i % 50 == 0) {
+            grayValue = 0.5;
+            text = new PointText(bottomPoint);
+            text.fillColor = 'black';
+            text.content = i;
+        }
+        else if (i % 10 == 0) {
+            grayValue = 0.75;
+            text = new PointText(bottomPoint);
+            text.fillColor = 'black';
+            text.content = i;
+        }
+        else if (i % 5 == 0) {
+            grayValue = 0.875;
+        }
+        else {
+            continue;
+        }
+        path.strokeColor = new Color(grayValue);
+
+        topPoint += pointIncrease * scalingFactor;
+        bottomPoint += pointIncrease * scalingFactor;
+    }
 }
-var rectangle = new Rectangle(new Point(20, 20), new Size(60, 60));
-var cornerSize = new Size(10, 10);
-var shape = new Shape.Rectangle(rectangle, cornerSize);
-shape.strokeColor = 'red';
 
 // Create a Tool so we can listen for events
 var toolPan = new paper.Tool()
@@ -102,7 +107,8 @@ xhttp.send();
 
 function myFunction(xml) {
     var xmlDoc = xml.responseXML;
-    printRegions(xmlDoc, 1, 0);
+    height = printRegions(xmlDoc, 1, 0);
+    printLines(height);
 }
 
 
@@ -116,7 +122,7 @@ function printRegions(rootNode, depth, startY) {
             //console.log(curChild.nodeName + "   " + height);
 
             //if its not a leaf
-            if (curChild.childNodes.length != 0) {
+            if (curChild.childNodes.length != 0 && depth < maxDepth) {
 
                 endY = printRegions(curChild, depth + 1, startY);
                 createCatagoryBox(curChild.nodeName, startY, endY, depth);
@@ -138,34 +144,35 @@ function printRegions(rootNode, depth, startY) {
 function createCatagoryBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(50 + depth * 50, endY));
     shape = new Shape.Rectangle(rectangle);
-    shape.fillColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    shape.fillColor = rainbowStop((curColor-0.12)%1);
     shape.opacity = 0.5;
 
-    var textLocation = new Point(depth*50, endY);
+    var textLocation = new Point(depth * 50, endY);
     var text = new PointText(textLocation);
     text.fillColor = 'black';
     text.content = label;
-    text.rotate(270,textLocation);
-    text.translate(new Point(25,-5));
+    text.rotate(270, textLocation);
+    text.translate(new Point(25, -5));
     text.fontSize = 20;
     console.log(text.strokeBounds.height + "   " + label);
 
-    if(text.strokeBounds.height > endY-startY){
-        scalingFactor = (endY-startY)/(text.strokeBounds.height+10);
-        text.scale(scalingFactor,scalingFactor,textLocation);
+    if (text.strokeBounds.height > endY - startY) {
+        scalingFactor = (endY - startY) / (text.strokeBounds.height + 10);
+        text.scale(scalingFactor, scalingFactor, textLocation);
     }
 }
 
 function createFinalBox(label, startY, endY, depth) {
-    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(350, endY));
+    rectangle = new Rectangle(new Point(depth * 50, startY), new Point(3000, endY));
     shape = new Shape.Rectangle(rectangle);
-    shape.fillColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    shape.opacity = 0.5;
+    shape.fillColor = rainbowStop(curColor);
+    curColor = (curColor+0.05)%1;
+    shape.opacity = 0.25;
 
-    var textLocation = new Point(depth*50, endY);
+    var textLocation = new Point(depth * 50, endY);
     var text = new PointText(textLocation);
     text.fillColor = 'black';
     text.content = label;
     text.fontSize = 15;
-    text.translate(new Point(10,-5));
+    text.translate(new Point(10, -5));
 }
