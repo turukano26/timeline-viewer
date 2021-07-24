@@ -44,7 +44,30 @@
     <France/>
     <Iberia/>
     <NorthAfrica/>
-    <Italy/>
+    <Italy>
+      <Sicily/>
+      <Calabria/>
+      <Apulia/>
+      <Campania/>
+      <Latium>
+        <Aquinum/>
+        <Arpinum/>
+        <Tusculum/>
+        <Velitrae/>
+        <Rome/>
+        <Ostia/>
+      </Latium>
+      <Samnium/>
+      <Picenum/>
+      <Umbria/>
+      <Etruria/>
+      <Sardinia/>
+      <Liguria/>
+      <Piedmont/>
+      <Lombard/>
+      <Aemilia/>
+      <Venetia/>
+    </Italy>
     <Balkans/>
     <Romania/>
     <Bulgaria/>
@@ -53,11 +76,8 @@
       <Macedonia/>
       <Epirus/>
       <Thessaly/>
-      <CentralGreece>
-        <Euboea/>
-        <Attica/>
-        <Central/>
-      </CentralGreece>
+      <CentralGreece/>
+      <Attica/>
       <WesternGreece/>
       <IonianIslands/>
       <Peloponnese/>
@@ -73,14 +93,27 @@
     </Anatolia>
     <SouthCaucasus>
       <Georgia/>
-      <Armenia/>
       <Azerbaijan/>
+      <Armenia/>
     </SouthCaucasus>
     <Levant/>
     <Egypt>
       <Cyrene/>
-      <Upper/>
-      <Lower/>
+      <Lower>
+        <Alexandria/>
+        <Tanis/>
+        <Heliopolis/>
+        <Cairo/>
+        <Memphis/>
+        <Faiyum/>
+        <Herakleopolis/>
+      </Lower>
+      <Upper>
+        <Asyut/>
+        <Abydos/>
+        <Thebes/>
+        <Syene/>
+      </Upper>
     </Egypt>
   </Mediterranean>
   <Ethiopia>
@@ -112,7 +145,7 @@
     <Gujrat/>
     <Ganges/>
     <Nepal/>
-    <FarEast/>
+    <Assam/>
     <Bengal/>
     <SouthEast/>
     <Deccan/>
@@ -138,26 +171,26 @@
       <Annan/>
     </Vietnam>
   </Indochina>
-  <Sinosphere>
-    <China>
-      <Yunnan/>
-      <Guangxi/>
-      <Guangdong/>
-      <Fujian/>
-      <Yangtze/>
-      <Sichuan/>
-      <Hanzhong/>
-      <NorthChinaPlain/>
-      <Gansu/>
-      <NorthChina/>
-    </China>
+  <China>
+    <Yunnan/>
+    <Guangxi/>
+    <Guangdong/>
+    <Fujian/>
+    <Yangtze/>
+    <Sichuan/>
+    <Hanzhong/>
+    <NorthChinaPlain/>
+    <Gansu/>
+    <NorthChina/>
+  </China>
+  <FarEast>
     <Korea>
       <North/>
       <South/>
     </Korea>
     <Japan/>
     <Manchuria/>
-  </Sinosphere>
+  </FarEast>
   <EastSteppes>
     <Mongolia/>
     <Dzungaria/>

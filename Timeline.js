@@ -31,21 +31,21 @@ function printLines() {
         path = new Path.Line(topPoint, bottomPoint);
         if (i % 100 == 0) {
             grayValue = 0;
-            text = new PointText(topPoint+new Point(0,20));
+            text = new PointText(topPoint+new Point(2,20));
             text.fontSize = 20;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 50 == 0) {
             grayValue = 0.5;
-            text = new PointText(topPoint+new Point(0,20));
+            text = new PointText(topPoint+new Point(2,20));
             text.fontSize = 15;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 10 == 0) {
             grayValue = 0.75;
-            text = new PointText(topPoint+new Point(0,20));
+            text = new PointText(topPoint+new Point(2,20));
             text.fillColor = 'black';
             text.content = i;
         }
@@ -69,6 +69,13 @@ toolPan.activate()
 toolPan.onMouseDrag = function (event){
     timelineLayer.translate(new Point(event.delta.x, 0));
     regionLayer.translate(new Point(0, event.delta.y));
+}
+
+var cursorX;
+var cursorY;
+toolPan.onMouseMove = function (event){
+    cursorX = event.point.x;
+    cursorY = event.point.y;
 }
 
 /* tool.onKeyDown = function (event) {
@@ -123,10 +130,10 @@ this.zooming = function (delta, point) {
 
     var ZOOM_FACTOR = 10;
 
-    var zoomVal = Math.pow(1.05, delta/ ZOOM_FACTOR);
+    var zoomVal = Math.pow(1.05, -delta/ ZOOM_FACTOR);
 
-    timelineLayer.scale(zoomVal,new Point(0,0));
-    regionLayer.scale(zoomVal, new Point(0,0));
+    timelineLayer.scale(zoomVal,new Point(cursorX,0));
+    regionLayer.scale(zoomVal, new Point(0,cursorY));
 
 };
 
