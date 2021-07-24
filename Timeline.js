@@ -78,22 +78,12 @@ toolPan.onMouseMove = function (event){
     cursorY = event.point.y;
 }
 
-/* tool.onKeyDown = function (event) {
-    if (event.key == 'right') {
-        // Scale the path by 110%:
-        paper.view.scrollBy(new Point(9, 0))
+var slider = document.getElementById("myRange");
 
-        // Prevent the key event from bubbling
-        return false;
-    }
-    else if (event.key == 'left') {
-        // Scale the path by 110%:
-        paper.view.scrollBy(new Point(-9, 0))
-
-        // Prevent the key event from bubbling
-        return false;
-    }
-} */
+slider.oninput = function() {
+    maxDepth = this.value;
+    redrawRegions();
+}
 
 var elem = document.getElementById("canvas");
 
