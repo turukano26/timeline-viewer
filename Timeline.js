@@ -120,7 +120,7 @@ this.zooming = function (delta, point) {
 
     var ZOOM_FACTOR = 10;
 
-    var zoomVal = Math.pow(1.05, -delta/ ZOOM_FACTOR);
+    var zoomVal = Math.pow(1.02, -delta/ ZOOM_FACTOR);
 
     timelineLayer.scale(zoomVal,new Point(cursorX,0));
     regionLayer.scale(zoomVal, new Point(0,cursorY));
