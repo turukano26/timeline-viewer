@@ -1,6 +1,7 @@
 var startYear = -500;
 var endYear = 2000;
 var gradiation = 10;
+var changingGrayValue = 0;
 
 var pointIncrease = new Point(gradiation, 0);
 
@@ -31,21 +32,21 @@ function printLines() {
         path = new Path.Line(topPoint, bottomPoint);
         if (i % 100 == 0) {
             grayValue = 0;
-            text = new PointText(topPoint+new Point(2,20));
+            text = new PointText(topPoint + new Point(2, 20));
             text.fontSize = 20;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 50 == 0) {
             grayValue = 0.5;
-            text = new PointText(topPoint+new Point(2,20));
+            text = new PointText(topPoint + new Point(2, 20));
             text.fontSize = 15;
             text.fillColor = 'black';
             text.content = i;
         }
         else if (i % 10 == 0) {
             grayValue = 0.75;
-            text = new PointText(topPoint+new Point(2,20));
+            text = new PointText(topPoint + new Point(2, 20));
             text.fillColor = 'black';
             text.content = i;
         }
@@ -66,21 +67,21 @@ function printLines() {
 var toolPan = new paper.Tool()
 toolPan.activate()
 
-toolPan.onMouseDrag = function (event){
+toolPan.onMouseDrag = function (event) {
     timelineLayer.translate(new Point(event.delta.x, 0));
     regionLayer.translate(new Point(0, event.delta.y));
 }
 
 var cursorX;
 var cursorY;
-toolPan.onMouseMove = function (event){
+toolPan.onMouseMove = function (event) {
     cursorX = event.point.x;
     cursorY = event.point.y;
 }
 
 var slider = document.getElementById("myRange");
 
-slider.oninput = function() {
+slider.oninput = function () {
     maxDepth = this.value;
     redrawRegions();
 }
@@ -92,7 +93,6 @@ if (elem.addEventListener) {
         // IE9+, FF17+, Ch31+
         elem.addEventListener("wheel", onWheel);
     } else if ('onmousewheel' in document) {
-        // устаревший вариант события
         elem.addEventListener("mousewheel", onWheel);
     } else {
         // Firefox < 17
@@ -120,10 +120,10 @@ this.zooming = function (delta, point) {
 
     var ZOOM_FACTOR = 10;
 
-    var zoomVal = Math.pow(1.05, -delta/ ZOOM_FACTOR);
+    var zoomVal = Math.pow(1.02, -delta / ZOOM_FACTOR);
 
-    timelineLayer.scale(zoomVal,new Point(cursorX,0));
-    regionLayer.scale(zoomVal, new Point(0,cursorY));
+    timelineLayer.scale(zoomVal, new Point(cursorX, 0));
+    regionLayer.scale(zoomVal, new Point(0, cursorY));
 
 };
 
@@ -164,7 +164,8 @@ function myFunction(xml) {
 
     regionLayer.bringToFront();
 }
-function redrawRegions(){
+// TODO: coom
+function redrawRegions() {
     regionLayer.removeChildren();
     regionLayer.activate();
     printRegions(xmlDoc, 0, 0);
@@ -203,7 +204,9 @@ function printRegions(rootNode, depth, startY) {
 function createCatagoryBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point((depth * 50), startY), new Point((50 + depth * 50), endY));
     shape = new Shape.Rectangle(rectangle);
-    shape.fillColor = rainbowStop((curColor - 0.12) % 1);
+    //shape.fillColor = rainbowStop((curColor - 0.12) % 1);
+    shape.fillColor = new Color(Math.abs((changingGrayValue % 1) - 0.5) * 2);
+    changingGrayValue = changingGrayValue + 0.05;
     shape.opacity = 0.3;
 
     var textLocation = new Point(depth * 50, endY);
@@ -213,6 +216,7 @@ function createCatagoryBox(label, startY, endY, depth) {
     text.rotate(270, textLocation);
     text.translate(new Point(25, -5));
     text.fontSize = 20;
+    console.error("joey is cringe")
 
     if (text.strokeBounds.height > endY - startY) {
         scalingFactor = (endY - startY) / (text.strokeBounds.height + 10);
@@ -223,8 +227,10 @@ function createCatagoryBox(label, startY, endY, depth) {
 function createFinalBox(label, startY, endY, depth) {
     rectangle = new Rectangle(new Point(depth * 50, startY), new Point(30000, endY));
     shape = new Shape.Rectangle(rectangle);
-    shape.fillColor = rainbowStop(curColor);
-    curColor = (curColor + (1/(depth*10))) % 1;
+    //shape.fillColor = rainbowStop(curColor);
+    //curColor = (curColor + (1 / (depth * 10))) % 1;
+    shape.fillColor = new Color(Math.abs((changingGrayValue % 1) - 0.5) * 2);
+    changingGrayValue = changingGrayValue + 0.03;
     shape.opacity = 0.25;
 
     var textLocation = new Point(depth * 50, endY);
