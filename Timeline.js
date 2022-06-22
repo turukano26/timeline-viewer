@@ -147,8 +147,10 @@ xhttp.onreadystatechange = function () {
         myFunction(this);
     }
 };
+
 xhttp.open("GET", "regions.xml", true);
 xhttp.send();
+
 
 function myFunction(xml) {
     xmlDoc = xml.responseXML;
