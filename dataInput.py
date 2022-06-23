@@ -1,7 +1,9 @@
-from msilib.schema import ComboBox
+from this import s
 from tkinter import *
 from tkinter.ttk import Combobox
-from unittest import case
+from tkinter.scrolledtext import ScrolledText
+from turtle import heading
+
 
 
 root = Tk()
@@ -29,6 +31,7 @@ input_type = Combobox(root, textvariable=input_type_var)
 input_type.bind('<<ComboboxSelected>>', switchInputType)
 input_type['values'] = ('Person', 'Country')
 input_type.state(["readonly"])
+input_type.set('Person')
 input_type.grid(row=0, column=0)
 
 class Lotfi(Entry):
@@ -41,7 +44,7 @@ class Lotfi(Entry):
         self.get, self.set = self.var.get, self.var.set
 
     def check(self, *args):
-        if self.get().isdigit() and len(self.get()) <= self.allowed_digits: 
+        if self.get().lstrip('-').isdigit() and len(self.get().lstrip('-')) <= self.allowed_digits or len(self.get().lstrip('-')) == 0: 
             # the current value is only digits; allow this
             self.old_value = self.get()
         else:
@@ -55,14 +58,14 @@ class AttributeField:
         self.name = name
         self.row = row_num
 
-        self.label = Label(parent_frame, text=name)
+        self.label = Label(parent_frame, text=name + ": ")
         self.label.grid(row=row_num, column=0)
 
 
 class StringField(AttributeField):
     def __init__(self, name, row_num, parent_frame):
         self.entry = Entry(parent_frame)
-        self.entry.grid(row=row_num, column=1)
+        self.entry.grid(row=row_num, column=1, sticky=W)
         
         AttributeField.__init__(self, name, row_num, parent_frame)
 
@@ -70,16 +73,31 @@ class StringField(AttributeField):
         return self.entry.get()
 
 
+class TextField(AttributeField):
+    def __init__(self, name, row_num, parent_frame):
+        self.entry = ScrolledText(parent_frame, height = 6)
+        self.entry.grid(row=row_num, column=1, columnspan=2)
+        
+        AttributeField.__init__(self, name, row_num, parent_frame)
+
+    def get_data(self):
+        return self.entry.get("1.0", END)
+
+
 class DateField(AttributeField):
     def __init__(self, name, row_num, parent_frame):
-        self.entry_year = Lotfi(parent_frame, 5)
-        self.entry_year.grid(row=row_num, column=1)
 
-        self.entry_month = Lotfi(parent_frame, 2)
-        self.entry_month.grid(row=row_num, column=2)
+        date_input = Frame(parent_frame, )
+        self.entry_year = Lotfi(date_input, 4, width=5)
+        self.entry_year.grid(row=0, column=0)
 
-        self.entry_day = Lotfi(parent_frame, 2)
-        self.entry_day.grid(row=row_num, column=3)
+        self.entry_month = Lotfi(date_input, 2, width=3)
+        self.entry_month.grid(row=0, column=1)
+
+        self.entry_day = Lotfi(date_input, 2, width=3)
+        self.entry_day.grid(row=0, column=2)
+
+        date_input.grid(row=row_num, column=1, sticky=W)
         
         AttributeField.__init__(self, name, row_num, parent_frame)
 
@@ -109,7 +127,8 @@ def create_person_input():
 
     attributes = [["Name", StringField],
                  ["Born", DateField],
-                 ["Died", DateField]]
+                 ["Died", DateField],
+                 ["Notes", TextField]]
 
     createdFields = []
 
@@ -146,5 +165,6 @@ def create_country_input():
 
     country_input.grid(row=1, column=0)
 
+switchInputType("e")
 
 root.mainloop()
