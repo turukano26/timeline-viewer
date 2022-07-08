@@ -29,23 +29,29 @@ $password = 'philricha26sql!';
 $con = new mysqli($servername, $username, $password);
 
 mysqli_select_db($con,"new_schema");
-$sql="SELECT * FROM people WHERE id = ".$q;
+if ($q == 'all'){
+    $sql="SELECT * FROM people";
+}
+else{
+    $sql="SELECT * FROM people WHERE id = ".$q;
+}
+
 $result = mysqli_query($con,$sql);
 
 
 echo "<table>
 <tr>
-<th>Firstname</th>
-<th>Lastname</th>
-<th>Age</th>
-<th>Hometown</th>
-<th>Job</th>
+<th>ID</th>
+<th>Name</th>
+<th>Birthdate</th>
+<th>Deathdate</th>
 </tr>";
 while($row = mysqli_fetch_array($result)) {
   echo "<tr>";
   echo "<td>" . $row['id'] . "</td>";
   echo "<td>" . $row['name'] . "</td>";
-  echo "<td>" . $row['born'] . "</td>";
+  echo "<td>" . $row['birthdate'] . "</td>";
+  echo "<td>" . $row['deathdate'] . "</td>";
   echo "</tr>";
 }
 echo "</table>";

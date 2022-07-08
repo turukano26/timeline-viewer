@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Input Screen</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="Form.js"></script>
+    <script src="form2.js"></script>
 
     <script>
         function showUser(str) {
@@ -48,9 +50,9 @@
 
     <form>
         <select name="users" onchange="showUser(this.value)">
-            <option value="">Select a person:</option>
+            <option value="">choose</option>
+            <option value="all">All</option>
             <option value="0">0</option>
-            <option value="1">1</option>
             <option value="3">Joseph Swanson</option>
             <option value="4">Glenn Quagmire</option>
         </select>
@@ -71,17 +73,49 @@
         die("Connection failed: " . $conn->connect_error);
       }
       echo "Connected successfully";
-  
-      // Create database
-      $sql = "CREATE DATABASE myDB";
-      if ($conn->query($sql) === TRUE) {
-      echo "Database created successfully";
-      } else {
-      echo "Error creating database: " . $conn->error;
-      }
     ?>
 
     <a href="index.html">Go back to the timeline</a>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <form action="process.php" method="POST">
+        <div id="name-group" class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            placeholder="Full Name"
+          />
+        </div>
+
+        <div id="email-group" class="form-group">
+          <label for="birthdate">Birthdate</label>
+          <input
+            type="number"
+            class="form-control"
+            id="birthdate"
+            name="birthdate"
+            placeholder="email@example.com"
+          />
+        </div>
+
+        <div id="superhero-group" class="form-group">
+          <label for="deathdate">Deathdate</label>
+          <input
+            type="number"
+            class="form-control"
+            id="deathdate"
+            name="deathdate"
+            placeholder="Ant Man, Wonder Woman, Black Panther, Superman, Black Widow"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success">
+          Submit
+        </button>
+      </form>
+
 </body>
 </html>
