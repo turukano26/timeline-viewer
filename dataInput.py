@@ -7,6 +7,8 @@ from turtle import heading
 
 
 root = Tk()
+root.title('History Timeline Data Input')
+root.geometry('1000x700+50+50')
 
 #code for switching the input type
 
